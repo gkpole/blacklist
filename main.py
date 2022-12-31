@@ -49,14 +49,30 @@ with Client("my_account", api_id, api_hash, api_key) as app:
 
 # this variable is needed to execute the commands: /block and /unblock
 owner = [5913258033] # put your account telegram id here. (i added already you 
+
 @app.on_message(filters.command("start"))
 async def start(client, message):
-	await message.reply(f"Привет, я бот анти-спам. Я веду базу пользователей, которые являются опасными. Добавь меня в группу, и я буду предупрждать, если в чате будет писать пользователь из базы.")
-	reply_markup=InlineKeyboardMarkup
-                        InlineKeyboardButton(  # Opens a web URL
-                            "Пользовательское соглашение",
-                            url="https://noziss.ru/bot"
- 
+   if message.chat.type == 'private':
+       await app.send_message(
+               chat_id=message.chat.id,
+               text="""<b>Привет!!! Я анти-скам бот.
+
+Я веду базу пользователей, которые индентифицируются как опасные.
+
+Добавь меня в чат, и я буду предупреждать, если напишешь скамер.</b>""",   
+                            reply_markup=InlineKeyboardMarkup(
+                                [
+                                [
+                                                                   InlineKeyboardButton('❗ Пользовательское соглашение', url='https://noziss.ru/bot')
+                                    ],[
+                                        InlineKeyboardButton('👮 Создатель', url='https://t.me/NoZiss')
+                                    ],[
+                                        InlineKeyboardButton('➕ Добавить в чат➕', url='https://t.me/@StopScamBLBot?startgroup=new'),
+                                    ]]
+                            ),        
+            disable_web_page_preview=True,        
+            parse_mode="html")
+
 # when a user join in the group, the bot examine if a user is on the database, if yes, the user will be banned.
 @app.on_message(filters.new_chat_members & filters.group)
 async def blacklist(client, message):
