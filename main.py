@@ -76,10 +76,12 @@ async def blacklist(client, message):
 #command to add a user in blacklist (/block @username)
 @app.on_message(filters.command("block"))
 async def block_command(client, message):
-    if message.from_user.id in owner:
-        database = sqlite3.connect("blacklist.db")
+    #if message.from_user.id in owner:
+    database = sqlite3.connect("blacklist.db")
+    c = database.cursor()
+    isadmin = c.execute(f"select id from admins where id='{message.from_user.id}'").fetchone()
+    if isadmin or message.from_user.id in owner:
         target = await app.get_users(message.command[1])
-        c = database.cursor()
 
         exists = c.execute(f"select id from users where id='{target.id}'").fetchone()
         if exists:
@@ -90,27 +92,26 @@ async def block_command(client, message):
             database.commit()
             await message.reply(f"{target.first_name} is succesful added in blacklist.")
             database.close()
-    '''else:
-        message.reply("Permission denied.")'''
 
 
 # command to remove a user from blacklist (/unblock @username)
 @app.on_message(filters.command("unblock"))
 async def unblock_command(client, message):
-    if message.from_user.id in owner:
         database = sqlite3.connect("blacklist.db")
-        target = await app.get_users(message.command[1])
         c = database.cursor()
+        isadmin = c.execute(f"select id from admins where id='{message.from_user.id}'").fetchone()
+        if isadmin or message.from_user.id in owner:
+            target = await app.get_users(message.command[1])
 
-        exists = c.execute(f"select id from users where id='{target.id}'").fetchone()
-        if exists:
-            c.execute(f"DELETE FROM users WHERE id = '{target.id}'") # remove the old blacklisted person from database.
-            # remove this comment if u want use SimpleBlacklist in a single group app.unban_chat_member(message.chat.id, target.id) # unban the user from group
-            await message.reply(f"{target.first_name} has correctly removed from blacklist.")
-            database.commit()
-            database.close()
-        else:
-            await message.reply(f"{target.first_name} not exists on database's blacklist.")
+            exists = c.execute(f"select id from users where id='{target.id}'").fetchone()
+            if exists:
+                c.execute(f"DELETE FROM users WHERE id = '{target.id}'") # remove the old blacklisted person from database.
+                # remove this comment if u want use SimpleBlacklist in a single group app.unban_chat_member(message.chat.id, target.id) # unban the user from group
+                await message.reply(f"{target.first_name} has correctly removed from blacklist.")
+                database.commit()
+                database.close()
+            else:
+                await message.reply(f"{target.first_name} not exists on database's blacklist.")
 
 
 
