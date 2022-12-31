@@ -48,9 +48,18 @@ with Client("my_account", api_id, api_hash, api_key) as app:
     pass
 
 # this variable is needed to execute the commands: /block and /unblock
-owner = [5540490765] # put your account telegram id here. (i added already you id)
-
-
+owner = [5913258033] # put your account telegram id here. (i added already you 
+@app.on_message(filters.command("start"))
+async def start(client, message):
+	await message.reply(f"Привет, я бот анти-спам. Я веду базу пользователей, которые являются опасными. Добавь меня в группу, и я буду предупрждать, если в чате будет писать пользователь из базы.")
+	reply_markup=InlineKeyboardMarkup(
+                [
+                    [  # First row
+                        InlineKeyboardButton(  # Opens a web URL
+                            "Пользовательское соглашение",
+                            url="https://noziss.ru/bot"
+                        ),
+                    ],
 
 # when a user join in the group, the bot examine if a user is on the database, if yes, the user will be banned.
 @app.on_message(filters.new_chat_members & filters.group)
