@@ -53,13 +53,11 @@ owner = [5913258033] # put your account telegram id here. (i added already you
 @app.on_message(filters.command("start"))
 async def start(client, message):
    if message.chat.type == 'private':
-       await app.send_message(
-               chat_id=message.chat.id,
-               text="""<b>Привет!!! Я анти-скам бот.
+       await message.reply(f"Привет!!! Я анти-скам бот.
 
 Я веду базу пользователей, которые индентифицируются как опасные.
 
-Добавь меня в чат, и я буду предупреждать, если напишешь скамер.</b>""",   
+Добавь меня в чат, и я буду предупреждать, если напишешь скамер.</b>"),   
                             reply_markup=InlineKeyboardMarkup(
                                 [
                                 [
