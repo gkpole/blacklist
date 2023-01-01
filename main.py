@@ -54,6 +54,24 @@ owner = [5913258033] # put your account telegram id here. (i added already you
 async def handle(_:app, message: types.Message):
     await app.send_message(
         chat_id=message.chat.id,
+         text=f"""<b>👋 | Привет, {message.from_user.first_name}!
+🤖 | Я бот, который ведёт базу скам пользователей.
+🆘 | Подробнее - /help.</b>""",
+            reply_markup=InlineKeyboardMarkup(
+                 [
+                    [
+                         InlineKeyboardButton('📃 | пользовательское соглашение', url='https://noziss.ru/bot')
+                     ], [
+                     InlineKeyboardButton('👑 | Создатель', url='https://t.me/NoZiss')
+                ], [
+                    InlineKeyboardButton('➕ | Добавь в чат', url='https://t.me/StopScamBLBot?startgroup=new'),
+                ]]
+             ),)
+
+@app.on_message(filters.command("start2"))
+async def handle2(_:app, message: types.Message):
+    await app.send_message(
+        chat_id=message.chat.id,
          text=f"""<b>👋 | Привет, {call.from_user.first_name}!
 🤖 | Я бот, который ведёт базу скам пользователей.
 🆘 | Подробнее - /help.</b>""",
@@ -67,6 +85,8 @@ async def handle(_:app, message: types.Message):
                     InlineKeyboardButton('➕ | Добавь в чат', url='https://t.me/StopScamBLBot?startgroup=new'),
                 ]]
              ),)
+
+
 @app.on_message(filters.command("help"))
 async def help(_:app, message: types.Message):
         await app.send_message(
@@ -200,7 +220,7 @@ async def button(bot, update):
       cb_data = update.data
       if "start" in cb_data:
         await update.message.delete()
-        await handle(bot, update.message)
+        await handle2(bot, update.message)
 
 
 @app.on_message(filters.text)
