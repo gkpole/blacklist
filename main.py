@@ -101,7 +101,7 @@ async def blacklist(client, message):
     if exists:
         #await app.kick_chat_member(message.chat.id, message.from_user.id)
         await message.reply(
-            f"<b>{message.from_user.first_name}</b> is on blacklist because its defined as dangerous.")
+            f"<b>{message.from_user.first_name}</b> находится в черном списке, потому что он определен как опасный.")
 
     # save database's edit
     database.commit()
@@ -120,12 +120,12 @@ async def block_command(client, message):
 
         exists = c.execute(f"select id from users where id='{target.id}'").fetchone()
         if exists:
-            await message.reply(f"{target.first_name} is already on the blacklist.")
+            await message.reply(f"{target.first_name} уже в черном списке.")
         else:
             # remove this comment if u want use SimpleBlacklist on single group   app.kick_chat_member(message.chat.id, message.command[1], int(time.time() + 604800)) # ban target for 1 week from group
             c.execute(f"INSERT INTO users VALUES ('{target.id}')")
             database.commit()
-            await message.reply(f"{target.first_name} is succesful added in blacklist.")
+            await message.reply(f"{target.first_name} успешно добавлен в черный список.")
             database.close()
 
 
@@ -142,11 +142,11 @@ async def unblock_command(client, message):
             if exists:
                 c.execute(f"DELETE FROM users WHERE id = '{target.id}'") # remove the old blacklisted person from database.
                 # remove this comment if u want use SimpleBlacklist in a single group app.unban_chat_member(message.chat.id, target.id) # unban the user from group
-                await message.reply(f"{target.first_name} has correctly removed from blacklist.")
+                await message.reply(f"{target.first_name} успешно удален из черного списка.")
                 database.commit()
                 database.close()
             else:
-                await message.reply(f"{target.first_name} not exists on database's blacklist.")
+                await message.reply(f"{target.first_name} не существует в черном списке базы данных.")
 
 
 
@@ -159,10 +159,10 @@ async def setadmin_command(client, message):
         target = await app.get_users(message.command[1])
         isadmin = c.execute(f"select id from admins where id='{target.id}'").fetchone()
         if isadmin:
-            await message.reply("This user is already a bot's admin.")
+            await message.reply("Этот пользователь уже является администратором бота.")
         else:
             c.execute(f"insert into admins values('{target.id}')"); db.commit()
-            await message.reply(f"Succesful added {target.first_name} in bot's admins.\n\nTo remove him, type /unsetadmin @username/ID")
+            await message.reply(f"Успешно добавил {target.first_name} в администрацию бота.\n\nЧто бы убрать, используй /unsetadmin @username/ID")
     db.close()
 
 
@@ -174,18 +174,27 @@ async def unsetadmin_command(client, message):
     if admin:
         target = await app.get_users(message.command[1])
         if target.id in owner:
-            await message.reply("You can't remove from admins the owner.")
+            await message.reply("Вы не можете удалить из админов владельца.")
             db.close()
             return;
         isadmin = c.execute(f"select id from admins where id='{target.id}'").fetchone()
         if isadmin:
             c.execute(f"DELETE FROM admins where id='{target.id}'"); db.commit()
-            await message.reply(f"Correctly removed {target.id} from admins.\n\nTo readd him, type /setadmin @username/ID")
+            await message.reply(f" {target.id} успешно удален из администрации.\n\n Что бы добавить его, используйте /setadmin @username/ID")
         else:
             await message.reply(f"{target.first_name} isn't admin.")
     db.close()
 
 
+@app.on_message(filters.command("ping"))
+@capture_err
+async def ping(_, message):
+    start_time = time.time()
+    pong = await message.reply_text("Подождите...")
+    end_time = time.time()
+    ping = round((end_time - start_time) * 1000, 3)
+    await pong.edit_text(
+        f"**Ping [DC-{BOT_DC_ID}]:** {ping}ms\n\n**Uptime:** {get_readable_time((bot_uptime))}.", parse_mode='markdown')
 
 @app.on_callback_query()
 async def button(bot, update):
@@ -199,7 +208,7 @@ async def button(bot, update):
 async def check_messages(client, message):
     db = sqlite3.connect("blacklist.db"); c = db.cursor()
     isblacklisted = c.execute(f"select id from users where id='{message.from_user.id}'").fetchone()
-    if isblacklisted: await message.reply(f"⚠️ {message.from_user.mention} is a blacklisted person.")
+    if isblacklisted: await message.reply(f"⚠️ {message.from_user.mention} человек из черного списка. \n \n ❗ Не совершайте с этим пользователем никаких слелок, не переводите деньги просто так!")
     db.close()
 
 
