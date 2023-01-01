@@ -214,7 +214,7 @@ async def ping(_, message):
     end_time = time.time()
     ping = round((end_time - start_time) * 1000, 3)
     await pong.edit_text(
-        f"**Ping [DC-{BOT_DC_ID}]:** {ping}ms\n\n**Uptime:** {get_readable_time((bot_uptime))}.", parse_mode='markdown')
+        f"**Ping:** {ping}ms", parse_mode='markdown')
 
 @app.on_callback_query()
 async def button(bot, update):
