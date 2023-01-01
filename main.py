@@ -54,7 +54,7 @@ owner = [5913258033] # put your account telegram id here. (i added already you
 async def handle(_:app, message: types.Message):
     await app.send_message(
         chat_id=message.chat.id,
-         text="""<b>👋 | Привет, {message.from_user.first_name}!
+         text=f"""<b>👋 | Привет, {message.from_user.first_name}!
 🤖 | Я бот, который ведёт базу скам пользователей.
 🆘 | Подробнее - /help.</b>""",
             reply_markup=InlineKeyboardMarkup(
