@@ -27,7 +27,7 @@ If u need help, dm me on telegram and i will help u.
 '''
 
 from pyrogram import Client, filters, types, idle
-from pyrogram.types import (ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton)
+from pyrogram.types import (InlineQueryResultArticle, ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton)
 import asyncio
 import sqlite3
 import contextlib
