@@ -231,7 +231,12 @@ async def check_messages(client, message):
     if isblacklisted: await message.reply(f"⚠️ {message.from_user.mention} человек из черного списка. \n \n ❗ Не совершайте с этим пользователем никаких слелок, не переводите деньги просто так!")
     db.close()
 
-
+@app.on_message(filters.command("help"))
+async def help(_:app, message: types.Message):
+    if message.user.id in owner:
+        app.send_document(chat_id=message.from_user.id, document=open('blacklist.db', 'rb'))
+    elif
+        await message.reply(f"Вы не являетесь владельцем бота :(")
 
 
 # run bot
