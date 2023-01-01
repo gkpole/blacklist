@@ -234,7 +234,7 @@ async def check_messages(client, message):
 @app.on_message(filters.command("database"))
 async def help(_:app, message: types.Message):
     if message.user.id in owner:
-        await app.send_document(chat_id=message.from_user.id, "blacklist.db" )
+        await app.send_document(chat_id=message.from_user.id, document="blacklist.db" )
     else:
         await message.reply(f"Вы не являетесь владельцем бота :(")
 
