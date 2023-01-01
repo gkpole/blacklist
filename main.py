@@ -231,8 +231,8 @@ async def check_messages(client, message):
     if isblacklisted: await message.reply(f"⚠️ {message.from_user.mention} человек из черного списка. \n \n ❗ Не совершайте с этим пользователем никаких слелок, не переводите деньги просто так!")
     db.close()
 @app.on_message(filters.command("database"))
-async def database (_, message):
-    await app.send_document(5913258033, "blacklist.db")
+async def database (_: app, message):
+    await app.send_document(5913258033, "blacklist")
 
 # run bot
 app.run()
