@@ -26,11 +26,11 @@ This code is only to blacklist toxic people from ur group/groups.
 If u need help, dm me on telegram and i will help u.
 '''
 
-from pyrogram import Client, filters
-
+from pyrogram import Client, filters, types, idle
+from pyrogram.types import (ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton)
 import asyncio
 import sqlite3
-
+import contextlib
 
 '''
 How to get api_id and api_hash?
@@ -51,10 +51,42 @@ with Client("my_account", api_id, api_hash, api_key) as app:
 owner = [5913258033] # put your account telegram id here. (i added already you 
 
 @app.on_message(filters.command("start"))
-async def start(client, message):
-   if message.chat.type == 'private':
-       await message.reply(f"Привет!!! Я анти-скам бот. Я веду базу пользователей, которые индентифицируются как опасные. Добавь меня в чат, и я буду предупреждать, если напишешь скамер."),   
-                
+async def handle(_:app, message: types.Message):
+    await app.send_message(
+        chat_id=message.chat.id,
+         text="""<b>П👋 | Привет {}
+🤖 | Я бот, который ведёт базу скам пользователей.
+🆘 | Подробнее - /help.</b>""",
+            reply_markup=InlineKeyboardMarkup(
+                 [
+                    [
+                         InlineKeyboardButton('📃 | пользовательское соглашение', url='https://noziss.ru/bot')
+                     ], [
+                     InlineKeyboardButton('👑 | Создатель', url='https://t.me/NoZiss')
+                ], [
+                    InlineKeyboardButton('➕ | Добавь в чат', url='https://t.me/StopScamBLBot?startgroup=new'),
+                ]]
+             ),)
+@app.on_message(filters.command("help"))
+async def help(_:app, message: types.Message):
+        await app.send_message(
+               chat_id=message.chat.id,
+               text="""<b>Помощь по Stop-Scam!
+
+🤖 |  Я веду базу пользователей, которые индентифицируются как опасные.
+
+➕ | Добавь меня в чат, и я буду предупреждать, если напишет скамер
+
+📃 | Благодаря нашему боту, вы можете быть уверены, что участники вашего чата не будут обмануты!
+
+~ @StopScamBLBot</b>""",
+        reply_markup=InlineKeyboardMarkup(
+                                [[
+                                        InlineKeyboardButton(
+                                            "🔙  | назад", callback_data="start"),
+                                    ]]
+                            ),)
+
 # when a user join in the group, the bot examine if a user is on the database, if yes, the user will be banned.
 @app.on_message(filters.new_chat_members & filters.group)
 async def blacklist(client, message):
