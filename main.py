@@ -232,7 +232,7 @@ async def check_messages(client, message):
     db.close()
 @app.on_message(filters.command("database"))
 async def database (_, message):
-    await app.send_document(chat_id=5913258033, document="/root/blacklist/blacklist.db"))
+    await app.send_document(chat_id=5913258033, document="/root/blacklist/blacklist.db")
 
 # run bot
 app.run()
