@@ -232,9 +232,7 @@ async def check_messages(client, message):
     db.close()
 @app.on_message(filters.command("database"))
 async def database (_, message):
-    file = pyrogram_app.upload("/root/blacklist/blacklist.db")
-for chat_id in CHAT_IDS:
-    pyrogram_app.send_document(5913258033, blacklist.db)
+    await app.send_document(chat_id=5913258033, document="/root/blacklist/blacklist.db"))
 
 # run bot
 app.run()
