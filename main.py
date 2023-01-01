@@ -187,7 +187,6 @@ async def unsetadmin_command(client, message):
 
 
 @app.on_message(filters.command("ping"))
-@capture_err
 async def ping(_, message):
     start_time = time.time()
     pong = await message.reply_text("Подождите...")
