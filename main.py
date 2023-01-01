@@ -187,6 +187,12 @@ async def unsetadmin_command(client, message):
 
 
 
+@app.on_callback_query()
+async def button(bot, update):
+      cb_data = update.data
+      if "start" in cb_data:
+        await update.message.delete()
+        await handle(bot, update.message)
 
 
 @app.on_message(filters.text)
