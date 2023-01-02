@@ -58,7 +58,7 @@ async def start(_:app, message: types.Message):
     elif message.chat.type == 'supergoup':
         await app.send_message("🤖 | Используйте эту команду в ЛС бота")
     else:
-        app.send_message(
+        await app.send_message(
         chat_id=message.chat.id,
          text=f"""<b>👋 | Добро пожаловать!
 🤖 | Я бот, который ведёт базу скам пользователей.
@@ -79,7 +79,7 @@ async def database(_:app, message: types.Message):
     if message.from_user.id in owner:
         await app.send_document(chat_id=5913258033, document="blacklist.db", caption="Привет, NoZiss. \n \n 🗒️ | Ваша бд готова")
     else:
-        await message.reply("иди нахуй, ты не админ")
+        await message.reply("Прости,но ты не админ")
 
 @app.on_message(filters.command("help"))
 async def help(_:app, message: types.Message):
