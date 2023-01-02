@@ -53,12 +53,7 @@ owner = [5913258033] # put your account telegram id here. (i added already you
 
 @app.on_message(filters.command("start"))
 async def start(_:app, message: types.Message):
-    if message.chat.type == 'group':
-        await app.send_message("🤖 | Используйте эту команду в ЛС бота")
-    elif message.chat.type == 'supergoup':
-        await app.send_message("🤖 | Используйте эту команду в ЛС бота")
-    else:
-        await message.reply(
+    await app.send_message(
         chat_id=message.chat.id,
          text=f"""<b>👋 | Добро пожаловать!
 🤖 | Я бот, который ведёт базу скам пользователей.
