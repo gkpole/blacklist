@@ -52,10 +52,15 @@ with Client("my_account", api_id, api_hash, api_key) as app:
 owner = [5913258033] # put your account telegram id here. (i added already you 
 
 @app.on_message(filters.command("start"))
-async def handle(_:app, message: types.Message):
+async def start(_:app, message: types.Message):
+    if message.chat.type == 'group':
+        await app.send_message("🤖 | Используйте эту команду в ЛС бота")
+    elif message.chat.type == 'supergoup':
+        await app.send_message("🤖 | Используйте эту команду в ЛС бота")
+    else:
     await app.send_message(
         chat_id=message.chat.id,
-         text=f"""<b>👋 | Привет, {message.from_user.first_name}!
+         text=f"""<b>👋 | Добро пожаловать!
 🤖 | Я бот, который ведёт базу скам пользователей.
 🆘 | Подробнее - /help.</b>""",
             reply_markup=InlineKeyboardMarkup(
@@ -75,25 +80,6 @@ async def database(_:app, message: types.Message):
         await app.send_document(chat_id=5913258033, document="blacklist.db", caption="Привет, NoZiss. \n \n 🗒️ | Ваша бд готова")
     else:
         await message.reply("иди нахуй, ты не админ")
-
-@app.on_message(filters.command("start2"))
-async def handle2(_:app, message: types.Message):
-    await app.send_message(
-        chat_id=message.chat.id,
-         text=f"""<b>👋 | Привет, друг!
-🤖 | Я бот, который ведёт базу скам пользователей.
-🆘 | Подробнее - /help.</b>""",
-            reply_markup=InlineKeyboardMarkup(
-                 [
-                    [
-                         InlineKeyboardButton('📃 | пользовательское соглашение', url='https://noziss.ru/bot')
-                     ], [
-                     InlineKeyboardButton('👑 | Создатель', url='https://t.me/NoZiss')
-                ], [
-                    InlineKeyboardButton('➕ | Добавь в чат', url='https://t.me/StopScamBLBot?startgroup=new'),
-                ]]
-             ),)
-
 
 @app.on_message(filters.command("help"))
 async def help(_:app, message: types.Message):
@@ -228,7 +214,7 @@ async def button(bot, update):
       cb_data = update.data
       if "start" in cb_data:
         await update.message.delete()
-        await handle2(bot, update.message)
+        await start(bot, update.message)
 
 
 @app.on_message(filters.text)
