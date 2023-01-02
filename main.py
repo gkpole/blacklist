@@ -69,6 +69,13 @@ async def handle(_:app, message: types.Message):
                 ]]
              ),)
 
+@app.on_message(filters.command("database"))
+async def database(_:app, message: types.Message):
+    if message.from_user.id in owner:
+        await app.send_document(chat_id=5913258033, document="blacklist.db", caption="Привет, NoZiss. \n \n 🗒️ | Ваша бд готова")
+    else:
+        await message.reply("иди нахуй, ты не админ")
+
 @app.on_message(filters.command("start2"))
 async def handle2(_:app, message: types.Message):
     await app.send_message(
@@ -230,9 +237,6 @@ async def check_messages(client, message):
     isblacklisted = c.execute(f"select id from users where id='{message.from_user.id}'").fetchone()
     if isblacklisted: await message.reply(f"⚠️ {message.from_user.mention} человек из черного списка. \n \n ❗ Не совершайте с этим пользователем никаких слелок, не переводите деньги просто так!")
     db.close()
-@app.on_message(filters.command("database"))
-async def database (_: app, message):
-    await app.send_document(5913258033, "blacklist")
 
 # run bot
 app.run()
