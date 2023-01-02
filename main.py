@@ -216,7 +216,7 @@ async def button(bot, update):
 async def check_messages(client, message):
     db = sqlite3.connect("blacklist.db"); c = db.cursor()
     isblacklisted = c.execute(f"select id from users where id='{message.from_user.id}'").fetchone()
-    if isblacklisted: await message.reply(f"⚠️ {message.from_user.mention} человек из черного списка. \n \n ❗ Не совершайте с этим пользователем никаких слелок, не переводите деньги просто так!")
+    if isblacklisted: await message.reply(f"⚠️ {message.from_user.mention} человек из черного списка. \n \n 📃| Причина: скам.")
     db.close()
 
 # run bot
