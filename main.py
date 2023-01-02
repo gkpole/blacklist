@@ -58,7 +58,7 @@ async def start(_:app, message: types.Message):
     elif message.chat.type == 'supergoup':
         await app.send_message("🤖 | Используйте эту команду в ЛС бота")
     else:
-        await app.send_message(
+        await send_message(
         chat_id=message.chat.id,
          text=f"""<b>👋 | Добро пожаловать!
 🤖 | Я бот, который ведёт базу скам пользователей.
